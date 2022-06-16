@@ -1,4 +1,3 @@
-#include <algorithm>
 #include <bits/stdc++.h>
 
 using namespace std;
@@ -55,26 +54,16 @@ long long containMid(int left, int right) {
   return answer;
 }
 
-int searchMaximumScore(int left, int right, long long& answer, long long& acc) {
-  if (left == right){
-    acc = gArr[left];
-    answer = max(answer, acc * gArr[left]);
-    return gArr[left];
-  }
+long long searchMaximumScore(int left, int right) {
+  if (left == right) return gArr[left] * gArr[left];
   int mid = (left + right) / 2;
-  long long leftAcc = 0, rightAcc = 0;
-  int minValue = min(searchMaximumScore(left, mid, answer, leftAcc), searchMaximumScore(mid+1, right, answer, rightAcc));
-  acc = leftAcc + rightAcc;
-  answer = max(answer, acc * minValue);
+  long long answer = max(searchMaximumScore(left, mid), searchMaximumScore(mid+1, right));
   answer = max(answer, containMid(left, right));
-  return minValue;
+  return answer;
 }
 
 void solve() {
-  long long answer = -1;
-  long long _ = 0;
-  searchMaximumScore(0, gN-1, answer, _);
-  cout << answer << '\n';
+  cout << searchMaximumScore(0, gN-1) << '\n';
 }
 
 int main() {
