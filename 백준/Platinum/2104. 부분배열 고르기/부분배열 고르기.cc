@@ -18,6 +18,12 @@ void getInput() {
   FOR(gN) cin >> gArr[i];
 }
 
+void updateMinAcc(int inx, int& minValue, long long& acc) {
+  minValue = min(minValue, gArr[inx]);
+  acc += gArr[inx];
+
+}
+
 long long containMid(int left, int right) {
   int mid = (left + right) / 2;
   int lo = mid, hi = mid+1;
@@ -26,29 +32,17 @@ long long containMid(int left, int right) {
   long long answer = -1;
 
   while (lo >= left && hi <= right) {
-    if (gArr[lo] > gArr[hi]) {
-      minValue = min(minValue,gArr[lo]);
-      acc += gArr[lo];
-      lo--;
-    } else {
-      minValue = min(minValue,gArr[hi]);
-      acc += gArr[hi];
-      hi++;
-    }
+    if (gArr[lo] > gArr[hi]) updateMinAcc(lo--, minValue, acc);
+    else updateMinAcc(hi++, minValue, acc);
     answer = max(answer, acc * minValue);
   }
   while (lo >= left) {
-      minValue = min(minValue,gArr[lo]);
-      acc += gArr[lo];
-      lo--;
-      answer = max(answer, acc * minValue);
+    updateMinAcc(lo--, minValue, acc);
+    answer = max(answer, acc * minValue);
   }
-  answer = max(answer, acc * minValue);
   while (hi <= right) {
-      minValue = min(minValue,gArr[hi]);
-      acc += gArr[hi];
-      hi++;
-      answer = max(answer, acc * minValue);
+    updateMinAcc(hi++, minValue, acc);
+    answer = max(answer, acc * minValue);
   }
 
   return answer;
