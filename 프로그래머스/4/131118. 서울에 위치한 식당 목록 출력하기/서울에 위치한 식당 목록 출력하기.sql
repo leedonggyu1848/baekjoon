@@ -7,8 +7,8 @@ SELECT
     I.ADDRESS,
     ROUND(AVG(R.REVIEW_SCORE), 2) as SCORE
 from REST_INFO as I
-    join REST_REVIEW as R
+    right join REST_REVIEW as R
         on I.REST_ID=R.REST_ID
+where substr(address,1,2)='서울'
 group by I.REST_ID
-having I.ADDRESS like '서울%'
 order by SCORE desc, FAVORITES desc
