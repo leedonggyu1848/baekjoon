@@ -1,10 +1,12 @@
-k = int(input())
-stack = []
-for _ in range(k):
-    v = int(input())
-    if v == 0:
-        stack.pop()
-    else:
-        stack.append(v)
+import sys
+input = sys.stdin.readline
 
-print(sum(stack))
+k = int(input())
+s = []
+for _ in range(k):
+    n = int(input())
+    if n:
+        s.append(n)
+    else:
+        s.pop()
+print(sum(s))
