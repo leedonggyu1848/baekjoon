@@ -1,25 +1,22 @@
+import sys
+from itertools import starmap
+input = sys.stdin.readline
+
 n = int(input())
-people = [0] * n
-for i in range(n):
-    people[i] = int(input())
+arr = [int(input()) for _ in range(n)]
 
-ret = 0
+# (index, count) list
+# count: 같은 높이인 원소가 연속적으로 몇개가 있는가
 s = []
+rst = 0
 
-for rv in people:
-    while s and s[-1][0] < rv:
-        ret += 1
+for h in arr:
+    while s and s[-1][0] < h:
+        rst += 1
         s.pop()
+    is_same = s and s[-1][0] == h
     if s:
-        if s[-1][0] == rv:
-            ret += s[-1][1]
-            if len(s) != s[-1][1]:
-                ret += 1
-        else:
-            ret += 1
-    cnt = 1
-    if s and s[-1][0] == rv:
-        cnt = s[-1][1] + 1
-    s.append((rv, cnt))
+        rst += s[-1][1]+(len(s)!=s[-1][1]) if is_same else 1
+    s.append((h, s[-1][1]+1 if is_same else 1))
 
-print(ret)
+print(rst)
