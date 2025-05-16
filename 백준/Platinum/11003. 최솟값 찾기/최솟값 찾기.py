@@ -1,22 +1,35 @@
-from collections import deque
 import sys
 import heapq
+from collections import deque
+input = sys.stdin.readline
 
-n, l = map(int, sys.stdin.readline().split())
-nums = tuple(map(int, sys.stdin.readline().split()))
+n, l = map(int, input().split())
+nums = list(map(int, input().split()))
 
-q = deque()
+# nums배열에서 l개의 subsequence들
+# 각 subsequence에서 최솟값
 pq = []
-included = [False] * n
-rst = []
+garbage = []
+q = deque()
+rst = [-1] * n
+for i in range(l):
+    heapq.heappush(pq, nums[i])
+    q.append(nums[i])
+    rst[i] = pq[0]
 
-for i, num in enumerate(nums):
-    if len(q) == l:
-        included[q.popleft()[1]] = False
-    q.append((num, i))
-    included[i] = True
-    heapq.heappush(pq, (num, i))
-    while not included[pq[0][1]]:
+for i in range(l, n):
+    out = q.popleft()
+    is_garbage = False
+    if pq and pq[0] == out:
         heapq.heappop(pq)
-    rst.append(pq[0][0])
+    else:
+        is_garbage = True
+    while garbage and pq and garbage[0] == pq[0]:
+        heapq.heappop(pq)
+        heapq.heappop(garbage)
+    if is_garbage:
+        heapq.heappush(garbage, out)
+    heapq.heappush(pq, nums[i])
+    q.append(nums[i])
+    rst[i] = pq[0]
 print(*rst)
