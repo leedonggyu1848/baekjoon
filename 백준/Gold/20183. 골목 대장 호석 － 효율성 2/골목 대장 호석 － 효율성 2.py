@@ -11,7 +11,6 @@ costs = set()
 for _ in range(ne):
     v1, v2, cost = map(int, input().split())
     edges[v1].append((cost, v2))
-    edges[v2].append((cost, v2))
     costs.add(cost)
 costs = sorted(list(costs))
 
@@ -35,17 +34,19 @@ def dijkstra(start, limit):
     return dist
 
 rst = math.inf
-def bsearch(left, right):
-    global rst, end, start, costs, budget
+def bsearch(left, right, start, end):
+    global rst, costs, budget
     if left > right:
         return
     mid = (left + right) // 2
     cost = dijkstra(start, costs[mid])[end]
     if cost > budget:
-        bsearch(mid+1, right)
+        bsearch(mid+1, right, start, end)
     else:
         rst = min(rst, costs[mid])
-        bsearch(left, mid-1)
-bsearch(0, len(costs)-1)
+        bsearch(left, mid-1, start, end)
+
+bsearch(0, len(costs)-1, start, end)
+bsearch(0, len(costs)-1, end, start)
 print(rst if rst != math.inf else -1)
 
