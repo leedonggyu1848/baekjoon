@@ -11,6 +11,7 @@ costs = set()
 for _ in range(ne):
     v1, v2, cost = map(int, input().split())
     edges[v1].append((cost, v2))
+    edges[v2].append((cost, v1))
     costs.add(cost)
 costs = sorted(list(costs))
 
@@ -47,6 +48,5 @@ def bsearch(left, right, start, end):
         bsearch(left, mid-1, start, end)
 
 bsearch(0, len(costs)-1, start, end)
-bsearch(0, len(costs)-1, end, start)
 print(rst if rst != math.inf else -1)
 
