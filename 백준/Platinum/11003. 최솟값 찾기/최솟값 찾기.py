@@ -1,35 +1,29 @@
 import sys
-import heapq
 from collections import deque
 input = sys.stdin.readline
+sys.setrecursionlimit(10**6)
 
 n, l = map(int, input().split())
 nums = list(map(int, input().split()))
 
-# nums배열에서 l개의 subsequence들
-# 각 subsequence에서 최솟값
-pq = []
-garbage = []
-q = deque()
-rst = [-1] * n
-for i in range(l):
-    heapq.heappush(pq, nums[i])
-    q.append(nums[i])
-    rst[i] = pq[0]
+def push(q, e):
+# queue내부의 값이 증가하도록 만든다.
+# 같은 값이어도 넣는다
+    while q and q[-1] > e:
+        q.pop()
+    q.append(e)
 
+def pop(q, e):
+    if q[0] == e:
+        q.popleft()
+
+q = deque()
+rst = []
+for i in range(l):
+    push(q, nums[i])
+    rst.append(q[0])
 for i in range(l, n):
-    out = q.popleft()
-    is_garbage = False
-    if pq and pq[0] == out:
-        heapq.heappop(pq)
-    else:
-        is_garbage = True
-    while garbage and pq and garbage[0] == pq[0]:
-        heapq.heappop(pq)
-        heapq.heappop(garbage)
-    if is_garbage:
-        heapq.heappush(garbage, out)
-    heapq.heappush(pq, nums[i])
-    q.append(nums[i])
-    rst[i] = pq[0]
+    pop(q, nums[i - l])
+    push(q, nums[i])
+    rst.append(q[0])
 print(*rst)
