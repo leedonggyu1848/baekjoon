@@ -19,20 +19,19 @@ for y in range(n):
             bits[y] |= 1 << x
 
 full = (1 << n) - 1
+dp = [[-1] * (full+1) for _ in range(n)]
 def solve(y, x_slot, cnt):
-    global rst, bits, full
+    global bits, full
     if y == n or x_slot == full:
-        rst = max(rst, cnt)
-        return
-    if rst >= n-y+1 + cnt:
-        return
+        return 0
+    if dp[y][x_slot] != -1:
+        return dp[y][x_slot]
     cnds = full & ~(x_slot | bits[y]) # 빈 공간 1
     while cnds:
         mask = cnds & (-cnds) # cnds 가장 오른쪽 1
-        solve(y+1, x_slot ^ mask, cnt+1)
+        dp[y][x_slot] = max(dp[y][x_slot], solve(y+1, x_slot ^ mask, cnt+1)+1)
         cnds ^= mask
-    solve(y+1, x_slot, cnt)
+    dp[y][x_slot] = max(dp[y][x_slot], solve(y+1, x_slot, cnt))
+    return dp[y][x_slot]
 
-rst = 0
-solve(0, 0, 0)
-print(rst)
+print(solve(0, 0, 0))
