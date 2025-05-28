@@ -4,20 +4,6 @@ sys.setrecursionlimit(10**6)
 
 n, m = map(int, input().split())
 
-'''
-0 3
-1 2
-
-1 2 => turn_right  0 1  => flip horizon 3 2
-0 3 =>             3 2                  0 1
-| |
-| |
-turn left
-
-2 3  => flip horizon 1 0
-1 0                  2 3
-'''
-
 def rotate(quad, clock):
     if clock:
         return quad[3], quad[0], quad[1], quad[2]
@@ -48,14 +34,12 @@ def cal_step(cur, quad, piece):
         return cur - 3*piece
 
 def solve(step, pos, quad, level):
-#    print('step', step, 'pos', pos, 'quad', quad, 'level', level)
     if level == 1:
         print(pos[0]+1, pos[1]+1)
         return
     half = level >> 1
-    piece = (half) ** 2
+    piece = half ** 2
     q = step // piece
-#    print('q', q, 'real q', quad[q])
     nxt_pos = cal_pos(pos, quad[q], half)
     nxt_step = cal_step(step, q, piece)
     if q == 0:
