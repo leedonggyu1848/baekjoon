@@ -16,7 +16,7 @@ x = len(B)
 print(dp[y][x])
 if dp[y][x] != 0:
     s = []
-    while y != 0 and x != 0:
+    while y and x:
         if (dp[y][x] == (dp[y-1][x-1] + 1)) and A[y-1] == B[x-1]:
             s.append(A[y-1])
             y -= 1
