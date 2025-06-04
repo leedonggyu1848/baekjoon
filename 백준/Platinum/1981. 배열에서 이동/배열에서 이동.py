@@ -47,14 +47,14 @@ def bfs(left, right) -> bool:
     return False
 
 rst = math.inf
-while lo <= hi:
+while lo <= hi: # 두 값의 간격을 기준으로 이진탐색
     mid = (lo + hi) // 2
     found = False
-    for left in range(minimum, maximum - mid + 1):
+    for left in range(minimum, maximum - mid + 1): # 정해진 간격에서 가능한 모든 범위를 탐색
         if bfs(left, left + mid):
             found = True
             break
-    if found:
+    if found: # 찾았으면 간격을 줄임
         rst = min(rst, mid)
         hi = mid - 1
     else:
