@@ -26,28 +26,14 @@ class SegTree:
         def _inner(left, right, node, k):
             self.tree[node] -= 1
             if left == right:
-                return
-            mid = (left + right) // 2
-            left_node = left_child(node)
-            right_node = right_child(node)
-            if k < self.tree[left_node]:
-                return _inner(left, mid, left_node, k)
-            else:
-                return _inner(mid+1, right, right_node, k-self.tree[left_node])
-        _inner(0, self.n-1, self.root, k)
-
-    def search(self, k):
-        def _inner(left, right, node, k):
-            if left == right:
                 return left
+            mid = (left + right) // 2
             left_node = left_child(node)
             right_node = right_child(node)
-            mid = (left + right) // 2
             if k < self.tree[left_node]:
                 return _inner(left, mid, left_node, k)
             else:
                 return _inner(mid+1, right, right_node, k-self.tree[left_node])
-
         return _inner(0, self.n-1, self.root, k)
 
 n, k = map(int, input().split())
@@ -56,8 +42,7 @@ cur = k - 1
 cur_n = n
 rst = []
 for _ in range(n):
-    rst.append(tree.search(cur)+1)
-    tree.update(cur)
+    rst.append(tree.update(cur)+1)
     cur_n -= 1
     if cur_n != 0:
         cur = (cur + k - 1) % cur_n
