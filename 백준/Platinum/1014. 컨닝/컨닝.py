@@ -3,20 +3,16 @@ input = sys.stdin.readline
 
 def solve():
     sy, sx = map(int, input().split())
-    board = [[True] * sx for _ in range(sy)]
+    board = [0] * sx
     dp = [[-1] * (1 << sy) for _ in range(sx)] # x X 이전 열 위치들
     for y in range(sy):
         s = input()
         for x in range(sx):
             if s[x] =='x':
-                board[y][x] = False
+                board[x] |= 1 << y
 
     def mask(prev, x):
-        mask = 0
-        for y in range(sy):
-            if not board[y][x]:
-                mask = mask | (1 << y)
-        mask = mask | prev | (prev >> 1) | (prev << 1)
+        mask = board[x] | prev | (prev >> 1) | (prev << 1)
         return mask
 
     def dfs(x, prev):
