@@ -17,10 +17,6 @@ def union(p, v1, v2):
     big = find(p, v2)
     if small == big:
         return False
-    if p[small] > p[big]:
-        small, big = big, small
-    if p[small] == p[big]:
-        p[small] -= 1
     p[big] = small
     return True
 
