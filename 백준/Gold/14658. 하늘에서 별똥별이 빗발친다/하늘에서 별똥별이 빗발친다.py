@@ -11,8 +11,8 @@ for _ in range(k):
     stars_y.append(y)
     stars_x.append(x)
 
-stars_y.sort()
-stars_x.sort()
+stars_y = sorted(set(stars_y))
+stars_x = sorted(set(stars_x))
 n_stars = len(stars)
 
 rst = 0
