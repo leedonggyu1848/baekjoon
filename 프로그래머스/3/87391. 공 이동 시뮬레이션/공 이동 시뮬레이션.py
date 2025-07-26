@@ -4,7 +4,6 @@ up = 2
 down = 3
 dy = [0, 0, -1, 1]
 dx = [-1, 1, 0, 0]
-# 한 점이 아니라 사각형으로 생각해보자 (안될지도 모름)
     
 def solution(sy, sx, y, x, queries):
     
