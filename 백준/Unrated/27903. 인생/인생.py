@@ -1,0 +1,7 @@
+a = chr(29+72+20)
+b = chr(97+3)
+c = chr(20+29)
+z = chr(56)
+e = chr(52)
+f = chr(56)
+print(a+b+c+z+e+f)
