@@ -6,32 +6,32 @@ pop = heapq.heappop
 
 nv, ne, k = map(int, input().split())
 edges = [[] for _ in range(nv+1)]
-visited = [0] * (nv+1)
 for _ in range(ne):
     v1, v2, cost = map(int, input().split())
-    edges[v1].append([v2, cost, 0])
+    edges[v1].append((v2, cost))
 
-dist = [-1] * (nv+1)
+dist = [[] for _ in range(nv+1)]
 
 pq = []
 push(pq, (0, 1)) # cost, v
-dist[1] = 0
+push(dist[1], 0)
 while pq:
     cost, cur = pop(pq)
-    if visited[cur] < k:
-        visited[cur] += 1
-        dist[cur] = max(cost, dist[cur])
-    else:
+    if len(dist[cur]) >= k and -dist[cur][0] < cost:
         continue
     for edge in edges[cur]:
-        nxt, gap, cnt = edge
-        if visited[nxt] < k and cnt < k:
-            edge[2] += 1
-            push(pq, (cost + gap, nxt))
+        nxt, gap = edge
+        nxt_cost = cost + gap
+        if len(dist[nxt]) >= k and -dist[nxt][0] < nxt_cost:
+            continue
+        if len(dist[nxt]) >= k:
+            pop(dist[nxt])
+        push(dist[nxt], -nxt_cost)
+        push(pq, (nxt_cost, nxt))
 
 for i in range(1, nv+1):
-    if visited[i] != k:
+    if len(dist[i]) != k:
         print(-1)
     else:
-        print(dist[i])
+        print(-dist[i][0])
 
