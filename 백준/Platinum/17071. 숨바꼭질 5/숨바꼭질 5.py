@@ -1,46 +1,38 @@
 import sys
 from collections import deque
+input = sys.stdin.readline
 
-start, target = map(int, input().split())
+MAX_DIST = 500_000
+s, t = map(int, input().split())
+next_pos = [
+    lambda x:x+1,
+    lambda x:x-1,
+    lambda x:x*2
+]
 
-visited = [[-1] * 2 for _ in range(500_001)]
-dire = [-1, 1, 2]
+footprint = [[-1]*2 for _ in range(MAX_DIST+1)]
+def fill_footprint():
+    q = deque()
+    q.append((s, 0))
+    footprint[s][0] = 0
+    while q:
+        cur, time = q.pop()
+        nxt_time = time+1
+        for f in next_pos:
+            nxt = f(cur)
+            if 0 <= nxt <= MAX_DIST and footprint[nxt][nxt_time%2] == -1:
+                q.appendleft((nxt, nxt_time))
+                footprint[nxt][nxt_time%2] = nxt_time
 
-step = 0
-q = deque()
-pushed = 0
-pushing = 0
-success = False
-
-def is_range(pos):
-    return 0 <= pos <= 500_000
-
-def search():
-    global target, visited
-    step = 0
-    cur = target
-
-    while is_range(cur):
-        if visited[cur][step%2] != -1 and visited[cur][step%2] <= step:
-            print(step)
-            return
-        step += 1
-        cur = cur + step
+fill_footprint()
+cur = t
+time = 0
+while cur <= MAX_DIST:
+    clue = footprint[cur][time%2]
+    if clue != -1 and clue <= time:
+        print(time)
+        break
+    time += 1
+    cur += time
+if cur > MAX_DIST:
     print(-1)
-
-visited[start][0] = 0
-step = 0
-q.appendleft((start, step))
-while q:
-    pos, step = q.pop()
-    next_step = step + 1
-    for d in dire:
-        if d == 2:
-            next_pos = pos * 2
-        else:
-            next_pos = pos + d
-        if is_range(next_pos) and visited[next_pos][next_step%2] == -1:
-            visited[next_pos][next_step%2] = next_step
-            q.appendleft((next_pos, next_step))
-
-search()
