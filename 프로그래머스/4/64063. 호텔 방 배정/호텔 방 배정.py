@@ -14,7 +14,4 @@ def request_slot(req):
     return ret
         
 def solution(k, room_number):
-    answer = []
-    for i in room_number:
-        answer.append(request_slot(i))
-    return answer
+    return [request_slot(i) for i in room_number]
