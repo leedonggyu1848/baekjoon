@@ -80,8 +80,4 @@ for _ in range(int(input())):
     shallow = Node(shallow)
     deep = find_ancestor(Node(deep), depths[shallow.n])
     minv, maxv = lca(shallow, deep)
-    if minv == math.inf:
-        minv = 0
-    if maxv == -1:
-        maxv = 0
     print(minv, maxv)
