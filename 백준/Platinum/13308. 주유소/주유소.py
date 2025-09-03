@@ -14,19 +14,20 @@ for _ in range(ne):
     edges[v1].append((v2, cost))
     edges[v2].append((v1, cost))
 
-dist = [[math.inf for _ in range(2501)] for _ in range(nv)]
+dist = [{} for _ in range(nv)]
 pq = []
-pq.append((0, 0, w[0])) # cost, cur_node, min_weight
+push(pq,(0, w[0], 0)) # cost, min_weight, cur_node
 dist[0][w[0]] = 0
 while pq:
-    cur_cost, cur, cur_w = pq.pop()
+    cur_cost, cur_w, cur = pop(pq)
+    if cur == nv-1:
+        print(cur_cost)
+        break
     if dist[cur][cur_w] < cur_cost:
         continue
     for nxt, step in edges[cur]:
         nxt_cost = cur_cost + step*cur_w
         nxt_w = min(cur_w, w[nxt])
-        if nxt_cost < dist[nxt][nxt_w]:
+        if not (nxt_w in dist[nxt]) or (nxt_cost < dist[nxt][nxt_w]):
             dist[nxt][nxt_w] = nxt_cost
-            pq.append((nxt_cost, nxt, nxt_w))
-
-print(min(dist[nv-1]))
+            push(pq, (nxt_cost, nxt_w, nxt))
